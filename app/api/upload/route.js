@@ -24,7 +24,25 @@ export async function POST(request) {
       cloudinary.uploader.upload_stream(
         {
           folder: 'passport-photos',
-          resource_type: 'auto'
+          resource_type: 'auto',
+          eager: [
+            {
+              width: 350,
+              height: 450,
+              crop: "auto",
+              gravity: "face",
+              zoom: 0.75,
+              effect: "background_removal:fineedges_y",
+              background: "white",
+              effect: "auto_brightness:80",
+              effect: "auto_contrast:80",
+              effect: "auto_color:80",
+              effect: "upscale",
+              quality: "auto:best",
+              format: "jpg",
+            },
+          ],
+          eager_async: false,
         },
         (error, result) => {
           if (error) reject(error)

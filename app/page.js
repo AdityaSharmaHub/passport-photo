@@ -1,7 +1,7 @@
 'use client'
 
 import { Camera, DownloadIcon, InfoIcon, RotateCcwIcon, WandSparklesIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function Home() {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -9,6 +9,7 @@ export default function Home() {
   const [processedImageUrl, setProcessedImageUrl] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
+  const [src, setSrc] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]
@@ -46,6 +47,7 @@ export default function Home() {
 
       const uploadResult = await uploadResponse.json()
       setIsUploading(false)
+      setIsProcessing(true)
 
       // Process the uploaded image
       const processResponse = await fetch('/api/process', {
@@ -66,10 +68,27 @@ export default function Home() {
     } catch (error) {
       console.error('Error:', error)
       alert('Error creating passport photo. Please try again.')
-    } finally {
-      setIsProcessing(false)
     }
   }
+
+  async function waitForImage(url) {
+    let ready = false;
+    while (!ready) {
+      try {
+        const res = await fetch(url, { method: "HEAD" });
+        if (res.ok) {
+          ready = true;
+          setIsProcessing(false);
+        } else {
+          await new Promise((r) => setTimeout(r, 2000)); // retry in 2s
+        }
+      } catch {
+        await new Promise((r) => setTimeout(r, 2000));
+      }
+    }
+    return url;
+  }
+
 
   const handleReset = () => {
     setSelectedFile(null)
@@ -77,6 +96,7 @@ export default function Home() {
     setProcessedImageUrl('')
     setIsProcessing(false)
     setIsUploading(false)
+    setSrc('')
     // Clear the file input
     document.querySelector('input[type="file"]').value = ''
   }
@@ -116,6 +136,13 @@ export default function Home() {
       alert(`Error downloading image: ${error.message}`)
     }
   }
+
+
+  useEffect(() => {
+    if (processedImageUrl) {
+      waitForImage(processedImageUrl).then(setSrc);
+    }
+  }, [processedImageUrl]);
 
   return (
     <div className="min-h-screen bg-linear-to-r from-blue-400 to-indigo-400 py-12">
@@ -172,7 +199,7 @@ export default function Home() {
                   </span> : <span className='flex items-center gap-2'><WandSparklesIcon className='w-5 h-5' /> Create Passport Photo</span>}
             </button>
 
-            {processedImageUrl && (
+            {src && (
               <button
                 onClick={handleDownload}
                 className="bg-green-600 text-white px-6 py-3 rounded-md cursor-pointer hover:bg-green-700 font-medium flex items-center gap-2"
@@ -182,7 +209,7 @@ export default function Home() {
               </button>
             )}
 
-            {processedImageUrl && (
+            {src && (
               <button
                 onClick={handleReset}
                 className="bg-white text-indigo-500 border border-indigo-600 px-6 py-3 rounded-md hover:bg-indigo-100 cursor-pointer font-medium flex items-center gap-2"
@@ -206,7 +233,7 @@ export default function Home() {
                 className="w-full h-auto max-h-96 object-contain border rounded-md"
               />
             ) : (
-              <div className="w-full h-64 bg-indigo-100 flex items-center justify-center border  border-indigo-400 rounded-md">
+              <div className="w-full h-96 bg-indigo-100 flex items-center justify-center border  border-indigo-400 rounded-md">
                 <p className="text-indigo-500 font-medium">No image selected</p>
               </div>
             )}
@@ -215,14 +242,14 @@ export default function Home() {
           {/* Processed Image */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-4">Passport Photo</h3>
-            {processedImageUrl ? (
+            {src ? (
               <img
-                src={processedImageUrl}
+                src={src}
                 alt="Processed passport photo"
                 className="w-full h-auto max-h-96 object-contain border rounded-md"
               />
             ) : (
-              <div className="w-full h-64 bg-indigo-100 flex items-center justify-center border border-indigo-400 rounded-md">
+              <div className="w-full h-96 bg-indigo-100 flex items-center justify-center border border-indigo-400 rounded-md">
                 <p className="text-indigo-500 font-medium">
                   {isProcessing ?
                     <span className='flex items-center'>
@@ -231,7 +258,7 @@ export default function Home() {
                         <path className="opacity-75" fill="#615fff" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
                       Processing...
-                    </span> : 'Processed image will appear here'}
+                    </span> : "Processed image will appear here"}
                 </p>
               </div>
             )}
