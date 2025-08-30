@@ -16,7 +16,7 @@ export async function POST(request) {
 
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME
     
-    const transformation = 'c_auto,g_face,w_350,h_450,z_0.7/e_background_removal:fineedges_y/b_white/e_auto_brightness:80/e_auto_contrast:80/e_auto_color:80/e_upscale/q_auto:best,f_jpg'
+    const transformation = 'c_auto,g_face,w_350,h_450,z_0.6/e_background_removal:fineedges_y/b_white/e_auto_brightness:80/e_auto_contrast:80/e_auto_color:80/e_upscale/q_auto:best,f_jpg'
     const processedUrl = `https://res.cloudinary.com/${cloudName}/image/upload/${transformation}/${publicId}`
 
     return Response.json({
