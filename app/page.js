@@ -157,7 +157,7 @@ export default function Home() {
         </div>
 
         {/* File Upload Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div className="bg-white p-6 rounded-xl shadow-md mb-6">
           <h2 className="text-xl font-semibold mb-4">1. Upload Your Photo</h2>
           <input
             type="file"
@@ -173,7 +173,7 @@ export default function Home() {
         </div>
 
         {/* Action Buttons */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div className="bg-white p-6 rounded-xl shadow-md mb-6">
           <h2 className="text-xl font-semibold mb-4">2. Create Passport Photo</h2>
           <div className="flex gap-4 flex-wrap">
             <button
@@ -224,13 +224,13 @@ export default function Home() {
         {/* Image Preview Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Original Image */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-6 rounded-xl shadow-md">
             <h3 className="text-lg font-semibold mb-4">Original Image</h3>
             {originalImageUrl ? (
               <img
                 src={originalImageUrl}
                 alt="Original"
-                className="w-full h-auto max-h-96 object-contain border rounded-md"
+                className="w-full max-h-96 object-contain border border-neutral-500 bg-gray-200 rounded-lg"
               />
             ) : (
               <div className="w-full h-96 bg-indigo-100 flex items-center justify-center border  border-indigo-400 rounded-md">
@@ -240,13 +240,13 @@ export default function Home() {
           </div>
 
           {/* Processed Image */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-6 rounded-xl shadow-md">
             <h3 className="text-lg font-semibold mb-4">Passport Photo</h3>
             {src ? (
               <img
                 src={src}
                 alt="Processed passport photo"
-                className="w-full h-auto max-h-96 object-contain border rounded-md"
+                className="w-full h-auto max-h-96 object-contain border border-neutral-500 bg-gray-200 rounded-lg"
               />
             ) : (
               <div className="w-full h-96 bg-indigo-100 flex items-center justify-center border border-indigo-400 rounded-md">
