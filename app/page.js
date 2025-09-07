@@ -224,13 +224,13 @@ export default function Home() {
         {/* Image Preview Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Original Image */}
-          <div className="bg-white p-6 rounded-xl shadow-md">
+          <div className="bg-white py-6 px-7 rounded-xl shadow-md">
             <h3 className="text-lg font-semibold mb-4">Original Image</h3>
             {originalImageUrl ? (
               <img
                 src={originalImageUrl}
                 alt="Original"
-                className="w-full max-h-96 object-contain border border-neutral-500 bg-gray-200 rounded-lg"
+                className="w-full max-h-96 aspect-[3/4] object-contain border border-neutral-500 bg-white rounded-lg"
               />
             ) : (
               <div className="w-full h-96 bg-indigo-100 flex items-center justify-center border  border-indigo-400 rounded-md">
@@ -240,13 +240,13 @@ export default function Home() {
           </div>
 
           {/* Processed Image */}
-          <div className="bg-white p-6 rounded-xl shadow-md">
+          <div className="bg-white py-6 px-7 rounded-xl shadow-md">
             <h3 className="text-lg font-semibold mb-4">Passport Photo</h3>
             {src ? (
               <img
                 src={src}
                 alt="Processed passport photo"
-                className="w-full h-auto max-h-96 object-contain border border-neutral-500 bg-gray-200 rounded-lg"
+                className="w-full h-auto max-h-96 aspect-[3/4] object-contain border border-neutral-500 bg-white rounded-lg"
               />
             ) : (
               <div className="w-full h-96 bg-indigo-100 flex items-center justify-center border border-indigo-400 rounded-md">
